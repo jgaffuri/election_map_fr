@@ -4,12 +4,12 @@ from shapely.geometry import MultiPolygon, Polygon
 
 
 def convert_multipolygon_to_centroid(input_gpkg, output_gpkg):
-    new_features = []
 
     with fiona.open(input_gpkg, layer=0) as source:
         schema = source.schema.copy()
         schema['geometry'] = 'Point'
 
+        new_features = []
         for feature in source:
             geom = shape(feature['geometry'])
             
@@ -31,8 +31,8 @@ def convert_multipolygon_to_centroid(input_gpkg, output_gpkg):
             
             new_features.append(new_feature)
 
-    with fiona.open(output_gpkg, 'w', driver='GPKG', crs=source.crs, schema=schema) as sink:
-        sink.writerecords(new_features)
+        with fiona.open(output_gpkg, 'w', driver='GPKG', crs=source.crs, schema=schema) as out:
+            out.writerecords(new_features)
 
 
 folder = "/home/juju/geodata/elections_fr/bv/"
