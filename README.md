@@ -8,3 +8,6 @@ Bureaux de vote
 Résultats:
 - Européennes 2024: https://www.resultats-elections.interieur.gouv.fr/telechargements/EU2024/
 
+
+Cartographie de l'élection présidentielle 2022 au niveau communal
+https://observablehq.com/@jgaffuri/cartographie-de-lelection-presidentielle-2022-au-niveau-c
