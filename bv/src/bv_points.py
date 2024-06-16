@@ -28,7 +28,6 @@ def convert_multipolygon_to_centroid(input_gpkg, output_gpkg):
                     'properties': feature['properties']
                 }
                 
-                # Write the new feature to the output file
                 out_gpkg.write(new_feature)
 
 
