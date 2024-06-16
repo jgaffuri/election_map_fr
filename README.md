@@ -1,4 +1,4 @@
-# election_map_fr
+# Cartographie des élections en France
 Quelques ressources pour la cartographie des éléctions en france
 
 Bureaux de vote
