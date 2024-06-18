@@ -3,8 +3,8 @@ from pygridmap import gridtiler
 from datetime import datetime
 
 
-format_join = True
-aggregate = False
+format_join = False
+aggregate = True
 
 folder = "/home/juju/geodata/elections_fr/eur2024/"
 
@@ -39,15 +39,24 @@ if format_join:
 
 
     #join
-    format_join = pd.merge(df2, df, on='id_bv', how='left')
-
-
+    join = pd.merge(df2, df, on='id_bv', how='left')
     #print(join.iloc[0].to_string())
 
-    df.to_csv(folder + "1.csv", index=False)  # Set index=False to exclude row numbers from the output
+    #save
+    join.to_csv(folder + "1.csv", index=False)
 
 
 if aggregate:
+
+    aggregation_fun = {
+        "codeDepartement": gridtiler.aggregation_single_value,
+        "codeCirconscription": gridtiler.aggregation_single_value,
+        "nomCirconscription": gridtiler.aggregation_single_value,
+        "codeCommune": gridtiler.aggregation_single_value,
+        "nomCommune": gridtiler.aggregation_single_value,
+        "id_bv": gridtiler.aggregation_single_value,
+        }
+
     print(datetime.now(), "aggregation to", 100, "m")
-    gridtiler.grid_aggregation(input_file=folder + "1.csv", resolution=1, output_file=folder+"100.csv", a=100)
+    gridtiler.grid_aggregation(input_file=folder + "1.csv", resolution=1, output_file=folder+"100.csv", a=100, aggregation_fun=aggregation_fun)
 
