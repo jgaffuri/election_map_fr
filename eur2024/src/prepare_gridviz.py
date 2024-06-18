@@ -3,9 +3,9 @@ from pygridmap import gridtiler
 from datetime import datetime
 import os
 
-format_join = False
-aggregate = False
-tiling = True
+format_join = True
+aggregate = True
+tiling = False
 
 folder = "/home/juju/geodata/elections_fr/eur2024/"
 
@@ -24,8 +24,11 @@ if format_join:
     df = df.drop(columns=[col for col in df.columns if 'Nuance' in col])
     df = df.drop(columns=["Code localisation", "Code département", "Votants", "Abstentions", "Exprimés"])
 
+    #rename Voix X -> vX
+    for i in range(1,39): df.rename(columns={'Voix '+str(i): 'v'+str(i)}, inplace=True)
 
-
+    #add column
+    df['nb_bv'] = 1
 
     #make new field
     #df['id_bv'] = df['Code commune'].str.cat(df['Code BV'], sep='_')
