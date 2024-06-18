@@ -60,3 +60,11 @@ if aggregate:
     print(datetime.now(), "aggregation to", 100, "m")
     gridtiler.grid_aggregation(input_file=folder + "1.csv", resolution=1, output_file=folder+"100.csv", a=100, aggregation_fun=aggregation_fun)
 
+    for a in [2,5,10]:
+        print(datetime.now(), "aggregation to", a*100, "m")
+        gridtiler.grid_aggregation(input_file=folder+"100.csv", resolution=100, output_file=folder+str(a*100)+".csv", a=a, aggregation_fun=aggregation_fun)
+    for a in [2,5,10]:
+        print(datetime.now(), "aggregation to", a*1000, "m")
+        gridtiler.grid_aggregation(input_file=folder+"1000.csv", resolution=1000, output_file=folder+str(a*1000)+".csv", a=a, aggregation_fun=aggregation_fun)
+
+
