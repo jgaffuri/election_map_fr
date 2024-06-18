@@ -2,7 +2,7 @@ import geopandas as gpd
 from shapely.geometry import box, Polygon, Point, LineString, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
 from shapely.validation import make_valid
 
-from bv_points import convert_multipolygon_to_centroid
+from lib import convert_multipolygon_to_centroid
 
 
 
