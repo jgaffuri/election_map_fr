@@ -11,3 +11,8 @@ Résultats:
 
 Cartographie de l'élection présidentielle 2022 au niveau communal
 https://observablehq.com/@jgaffuri/cartographie-de-lelection-presidentielle-2022-au-niveau-c
+
+TODO:
+- gridviz
+- https://openlayers.org/en/latest/examples/cluster.html
+

@@ -3,8 +3,7 @@ from shapely.geometry import box
 from shapely.validation import make_valid
 
 from lib import convert_multipolygon_to_centroid, make_multipolygonal
-
-
+from reduceGeoJSON import reduceGeoJSONFile
 
 
 def prepare(input_file, code, output_folder):
@@ -58,6 +57,8 @@ out = "/home/juju/geodata/elections_fr/out_units/"
 #circonscriptions
 #prepare('/home/juju/geodata/elections_fr/circonscriptions/insee/circonscriptions_legislatives_030522.gpkg', "circ", out)
 #bureaux de vote
-prepare("/home/juju/geodata/elections_fr/bv/contours-france-entiere-latest-v2.gpkg", "bv", out)
+#prepare("/home/juju/geodata/elections_fr/bv/contours-france-entiere-latest-v2.gpkg", "bv", out)
 
+
+#reduceGeoJSONFile(out+'bv_met_pt.geojson', 0, out+'bv_met_pt___.geojson')
 
