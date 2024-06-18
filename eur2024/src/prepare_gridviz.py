@@ -4,7 +4,7 @@ from datetime import datetime
 import os
 
 format_join = True
-aggregate = False
+aggregate = True
 tiling = False
 
 folder = "/home/juju/geodata/elections_fr/eur2024/"
@@ -13,8 +13,7 @@ folder = "/home/juju/geodata/elections_fr/eur2024/"
 if format_join:
 
     #load election results
-    in_file = folder + "eur_resultats-definitifs-par-bureau-de-vote.csv"
-    df = pd.read_csv(in_file, sep=";")
+    df = pd.read_csv(folder + "eur_resultats-definitifs-par-bureau-de-vote.csv", sep=";")
 
     #remove unecessary columns
     df = df.drop(columns=[col for col in df.columns if '%' in col])
@@ -74,21 +73,24 @@ if aggregate:
     print(datetime.now(), "aggregation to", 100, "m")
     gridtiler.grid_aggregation(input_file=folder + "1.csv", resolution=1, output_file=folder+"100.csv", a=100, aggregation_fun=aggregation_fun)
 
-    print("simplify 100m")
-    df = pd.read_csv(folder+"100.csv")
-    df = df.drop(columns=["codeDepartement","codeCirconscription","nomCirconscription","codeCommune","nomCommune","id_bv"])
-    df.to_csv(folder + "100_simplified.csv", index=False)
-
-
     for a in [2,5,10]:
         print(datetime.now(), "aggregation to", a*100, "m")
-        gridtiler.grid_aggregation(input_file=folder+"100_simplified.csv", resolution=100, output_file=folder+str(a*100)+".csv", a=a)
+        gridtiler.grid_aggregation(input_file=folder+"100.csv", resolution=100, output_file=folder+str(a*100)+".csv", a=a, aggregation_fun=aggregation_fun)
     for a in [2,5,10]:
         print(datetime.now(), "aggregation to", a*1000, "m")
-        gridtiler.grid_aggregation(input_file=folder+"1000.csv", resolution=1000, output_file=folder+str(a*1000)+".csv", a=a)
+        gridtiler.grid_aggregation(input_file=folder+"1000.csv", resolution=1000, output_file=folder+str(a*1000)+".csv", a=a, aggregation_fun=aggregation_fun)
     for a in [2,5,10]:
         print(datetime.now(), "aggregation to", a*10000, "m")
-        gridtiler.grid_aggregation(input_file=folder+"10000.csv", resolution=1000, output_file=folder+str(a*10000)+".csv", a=a)
+        gridtiler.grid_aggregation(input_file=folder+"10000.csv", resolution=1000, output_file=folder+str(a*10000)+".csv", a=a, aggregation_fun=aggregation_fun)
+
+    print(datetime.now(), "clean")
+    for resolution in [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000]:
+        f = folder+str(resolution)+".csv"
+        df = pd.read_csv(f)
+        df.loc[df['id_bv'] > 1, ['codeDepartement', 'codeCirconscription', 'nomCirconscription', 'codeCommune', 'nomCommune', 'id_bv']] = None
+        df.to_csv(f, index=False)
+
+
 
 
 #tiling
