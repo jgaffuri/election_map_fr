@@ -83,12 +83,7 @@ if aggregate:
         print(datetime.now(), "aggregation to", a*10000, "m")
         gridtiler.grid_aggregation(input_file=folder+"10000.csv", resolution=1000, output_file=folder+str(a*10000)+".csv", a=a, aggregation_fun=aggregation_fun)
 
-    print(datetime.now(), "clean")
-    for resolution in [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000]:
-        f = folder+str(resolution)+".csv"
-        df = pd.read_csv(f)
-        df.loc[df['nb_bv'] > 1, ['codeDepartement', 'codeCirconscription', 'codeCommune', 'nomCirconscription', 'nomCommune', 'id_bv']] = None
-        df.to_csv(f, index=False)
+    
 
 
 
