@@ -9,6 +9,7 @@ Circonscriptions législatives:
 - https://www.insee.fr/fr/statistiques/6441661?sommaire=6436478
 
 Résultats:
+- Européennes 2024: https://www.data.gouv.fr/fr/datasets/resultats-des-elections-europeennes-du-9-juin-2024/
 - Européennes 2024: https://www.resultats-elections.interieur.gouv.fr/telechargements/EU2024/
 
 
