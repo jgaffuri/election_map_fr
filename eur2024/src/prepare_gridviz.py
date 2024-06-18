@@ -72,3 +72,6 @@ if aggregate:
     for a in [2,5,10]:
         print(datetime.now(), "aggregation to", a*1000, "m")
         gridtiler.grid_aggregation(input_file=folder+"1000.csv", resolution=1000, output_file=folder+str(a*1000)+".csv", a=a)
+    for a in [2,5,10]:
+        print(datetime.now(), "aggregation to", a*10000, "m")
+        gridtiler.grid_aggregation(input_file=folder+"10000.csv", resolution=1000, output_file=folder+str(a*10000)+".csv", a=a)
