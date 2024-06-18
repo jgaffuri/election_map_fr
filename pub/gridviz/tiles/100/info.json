@@ -1,0 +1,16 @@
+{
+   "dims": [],
+   "crs": "",
+   "tileSizeCell": 256,
+   "originPoint": {
+      "x": 0,
+      "y": 0
+   },
+   "resolutionGeo": 100,
+   "tilingBounds": {
+      "yMin": 239,
+      "yMax": 277,
+      "xMax": 42,
+      "xMin": 4
+   }
+}
