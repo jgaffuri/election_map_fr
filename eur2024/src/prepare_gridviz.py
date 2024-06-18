@@ -4,7 +4,7 @@ from datetime import datetime
 import os
 
 format_join = True
-aggregate = True
+aggregate = False
 tiling = False
 
 folder = "/home/juju/geodata/elections_fr/eur2024/"
@@ -46,11 +46,17 @@ if format_join:
 
 
     #join
-    join = pd.merge(df2, df, on='id_bv', how='left')
-    #print(join.iloc[0].to_string())
+    df = pd.merge(df2, df, on='id_bv', how='left')
+    #print(df.iloc[0].to_string())
+
+    # Remove rows where 'Inscrits' is NaN, 0 or ""
+    df = df[pd.notna(df['Inscrits'])]
+    df = df[df['Inscrits'] != None]
+    df = df[df['Inscrits'] != ""]
+    df = df[df['Inscrits'] != 0]
 
     #save
-    join.to_csv(folder + "1.csv", index=False)
+    df.to_csv(folder + "1.csv", index=False)
 
 
 #aggregation
