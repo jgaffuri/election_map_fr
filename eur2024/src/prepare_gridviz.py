@@ -3,9 +3,9 @@ from pygridmap import gridtiler
 from datetime import datetime
 import os
 
-format_join = True
-aggregate = True
-tiling = False
+format_join = False
+aggregate = False
+tiling = True
 
 folder = "/home/juju/geodata/elections_fr/eur2024/"
 
@@ -87,7 +87,7 @@ if aggregate:
     for resolution in [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000]:
         f = folder+str(resolution)+".csv"
         df = pd.read_csv(f)
-        df.loc[df['id_bv'] > 1, ['codeDepartement', 'codeCirconscription', 'nomCirconscription', 'codeCommune', 'nomCommune', 'id_bv']] = None
+        df.loc[df['nb_bv'] > 1, ['codeDepartement', 'codeCirconscription', 'nomCirconscription', 'codeCommune', 'nomCommune', 'id_bv']] = None
         df.to_csv(f, index=False)
 
 
