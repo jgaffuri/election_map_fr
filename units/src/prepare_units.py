@@ -56,11 +56,8 @@ def prepare(input_file, code, output_folder):
 
 out = "/home/juju/geodata/elections_fr/out_units/"
 #circonscriptions
-prepare('/home/juju/geodata/elections_fr/circonscriptions/insee/circonscriptions_legislatives_030522.gpkg', "circ", out)
-
-
+#prepare('/home/juju/geodata/elections_fr/circonscriptions/insee/circonscriptions_legislatives_030522.gpkg', "circ", out)
 #bureaux de vote
-#folder = "/home/juju/geodata/elections_fr/bv/"
-#convert_multipolygon_to_centroid(folder + "contours-france-entiere-latest-v2.gpkg", folder + "bv_pt.gpkg")
+prepare("/home/juju/geodata/elections_fr/bv/contours-france-entiere-latest-v2.gpkg", "bv", out)
 
 
