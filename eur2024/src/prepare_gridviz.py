@@ -5,7 +5,7 @@ import os
 
 format_join = True
 aggregate = True
-tiling = False
+tiling = True
 
 folder = "/home/juju/geodata/elections_fr/eur2024/"
 
@@ -87,8 +87,7 @@ if aggregate:
     for resolution in [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000]:
         f = folder+str(resolution)+".csv"
         df = pd.read_csv(f)
-        df.loc[df['nb_bv'] > 1, ['codeDepartement', 'codeCirconscription', 'codeCommune']] = 0
-        df.loc[df['nb_bv'] > 1, ['nomCirconscription', 'nomCommune', 'id_bv']] = ""
+        df.loc[df['nb_bv'] > 1, ['codeDepartement', 'codeCirconscription', 'codeCommune', 'nomCirconscription', 'nomCommune', 'id_bv']] = None
         df.to_csv(f, index=False)
 
 
