@@ -1,15 +1,17 @@
 import pandas as pd
 from pygridmap import gridtiler
+from datetime import datetime
 
 
+format_join = True
+aggregate = False
 
-format_join = False
-aggregate = True
+folder = "/home/juju/geodata/elections_fr/eur2024/"
 
 
 if format_join:
     #load election results
-    in_file = "/home/juju/geodata/elections_fr/eur2024/eur_resultats-definitifs-par-bureau-de-vote.csv"
+    in_file = folder + "eur_resultats-definitifs-par-bureau-de-vote.csv"
     df = pd.read_csv(in_file, sep=";")
 
     #remove unecessary columns
@@ -42,10 +44,10 @@ if format_join:
 
     #print(join.iloc[0].to_string())
 
-    df.to_csv("/home/juju/geodata/elections_fr/eur2024/1.csv", index=False)  # Set index=False to exclude row numbers from the output
+    df.to_csv(folder + "1.csv", index=False)  # Set index=False to exclude row numbers from the output
 
 
-if agggregate:
-    pass
-
+if aggregate:
+    print(datetime.now(), "aggregation to", 100, "m")
+    gridtiler.grid_aggregation(input_file=folder + "1.csv", resolution=1, output_file=folder+"100.csv", a=100)
 
