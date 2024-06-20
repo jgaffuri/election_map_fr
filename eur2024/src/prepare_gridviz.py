@@ -3,8 +3,8 @@ from pygridmap import gridtiler
 from datetime import datetime
 import os
 
-format_join = True
-aggregate = True
+format_join = False
+aggregate = False
 tiling = True
 
 folder = "/home/juju/geodata/elections_fr/eur2024/"
@@ -36,7 +36,7 @@ if format_join:
 
     #load bv data
     df2 = pd.read_csv("/home/juju/geodata/elections_fr/bv/bv.csv", dtype={'codeCirconscription': str})
-    df2 = df2.drop(columns=["fid","numeroBureauVote","id_bv"])
+    df2 = df2.drop(columns=["numeroBureauVote","id_bv"])
     #print(df2.iloc[0].to_string())
 
     #join
@@ -52,6 +52,9 @@ if format_join:
     #df = df[df['Inscrits'] != ""]
     #df = df[df['Inscrits'] != 0]
 
+    #TODO fix that
+    df = df.drop(columns=["codeBureauVote"])
+
     #save
     df.to_csv(folder + "1.csv", index=False)
 
@@ -59,13 +62,15 @@ if format_join:
 #aggregation
 if aggregate:
 
+    #codeDepartement	nomDepartement	codeCirconscription	nomCirconscription	codeCommune	nomCommune	codeBureauVote
     aggregation_fun = {
         "codeDepartement": gridtiler.aggregation_single_value,
+        "nomDepartement": gridtiler.aggregation_single_value,
         "codeCirconscription": gridtiler.aggregation_single_value,
         "nomCirconscription": gridtiler.aggregation_single_value,
         "codeCommune": gridtiler.aggregation_single_value,
         "nomCommune": gridtiler.aggregation_single_value,
-        "codeBureauVote": gridtiler.aggregation_single_value,
+        #TODO "codeBureauVote": gridtiler.aggregation_single_value,
         }
 
     print(datetime.now(), "aggregation to", 100, "m")
@@ -85,7 +90,7 @@ if aggregate:
     for resolution in [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000]:
         f = folder+str(resolution)+".csv"
         df = pd.read_csv(f)
-        df.loc[df['nb_bv'] > 1, ['codeDepartement', 'codeCirconscription', 'codeCommune', 'nomCirconscription', 'nomCommune', 'codeBureauVote']] = None
+        df.loc[df['nb_bv'] > 1, ['codeDepartement', 'nomDepartement', 'codeCirconscription', 'codeCommune', 'nomCirconscription', 'nomCommune', 'codeBureauVote']] = None
         df.to_csv(f, index=False)
 
 

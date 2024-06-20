@@ -13,8 +13,10 @@ def prepare(input_file, code, output_folder):
 
     #TODO do other territories
     terr = "met"
-    epsg = "2154"
-    extent = box(90000, 6100000, 1130000, 7140000)
+    epsg = "3035"
+    extent = box(3167000, 2165000, 4192000, 3135000)
+    #epsg = "2154"
+    #extent = box(90000, 6100000, 1130000, 7140000)
 
 
     #change projection
