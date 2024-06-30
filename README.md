@@ -11,6 +11,7 @@ Circonscriptions législatives:
 Résultats:
 - Européennes 2024: https://www.data.gouv.fr/fr/datasets/resultats-des-elections-europeennes-du-9-juin-2024/
 - Européennes 2024: https://www.resultats-elections.interieur.gouv.fr/telechargements/EU2024/
+- Législatives 2024: https://www.resultats-elections.interieur.gouv.fr/telechargements/LG2024/
 
 
 Cartographie de l'élection présidentielle 2022 au niveau communal

@@ -24,10 +24,7 @@ def xml_to_csv():
 
     with open(csv_file, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
-        # Write the header
-        writer.writerow(["NumOrdNuaCand", "CodNuaCand", "LibNuaCand"])
-
-        # Iterate over each NuanceCandidat element and write its data to the CSV
+        writer.writerow(["id", "code", "libelle"])
         for nuance_candidat in root.findall('.//NuanceCandidat'):
             num_ord_nua_cand = nuance_candidat.find('NumOrdNuaCand').text
             cod_nua_cand = nuance_candidat.find('CodNuaCand').text
@@ -37,7 +34,7 @@ def xml_to_csv():
     print(f"CSV file '{csv_file}' has been created successfully.")
 
 
-# Convert the XML to CSV
+#download()
 xml_to_csv()
 
 
