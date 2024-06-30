@@ -15,14 +15,13 @@ def xml_to_csv(xml_file_path, csv_file_path):
     
     for circo in root.findall('.//Circonscriptions/Circonscription'):
         cod_cir_elec = circo.find('.//CodCirElec').text
-        print("*** "+cod_cir_elec)
+        #print("*** "+cod_cir_elec)
 
         tour = circo.find('.//Tours/Tour')
 
         inscrits_number = tour.find('.//Mentions/Inscrits/Nombre').text
 
         for candidat in tour.findall('.//Resultats/Candidats/Candidat'):
-            print(candidat)
 
             nom_psn = candidat.find('NomPsn').text if candidat.find('NomPsn') is not None else ''
             prenom_psn = candidat.find('PrenomPsn').text if candidat.find('PrenomPsn') is not None else ''
@@ -30,8 +29,6 @@ def xml_to_csv(xml_file_path, csv_file_path):
             cod_nua_cand = candidat.find('CodNuaCand').text if candidat.find('CodNuaCand') is not None else ''
             nb_voix = candidat.find('NbVoix').text if candidat.find('NbVoix') is not None else ''
             elu = candidat.find('Elu').text if candidat.find('Elu') is not None else ''
-
-            print(nom_psn, prenom_psn)
 
             # Append the row to the list
             rows.append([
@@ -65,4 +62,4 @@ def xml_to_csv(xml_file_path, csv_file_path):
 
 
 
-xml_to_csv("tmp/download_circo/"+file_code+"CIR.xml", "tmp/"+file_code+"CIR.csv")
+xml_to_csv("tmp/circo_xml/"+file_code+"CIR.xml", "tmp/circo_csv/"+file_code+"CIR.csv")
