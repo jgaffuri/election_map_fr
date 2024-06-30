@@ -47,14 +47,14 @@ def xml_to_csv(xml_file_path, csv_file_path):
 
     # Define the CSV headers
     headers = [
-        'NomPsn',
-        'PrenomPsn',
-        'CivilitePsn',
-        'CodNuaCand',
-        'NbVoix',
-        'Elu',
-        'CodCirElec',
-        'Inscrits'
+        'circo',
+        'inscrits',
+        'nom',
+        'prenom',
+        'civilite',
+        'nuance',
+        'voix',
+        'statut'
     ]
     
     # Write the rows to a CSV file
