@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 import csv
 
 folder = "tmp/"
-
+tour = "1"
 
 def list_files_in_folder(folder_path):
     try:
@@ -23,11 +23,11 @@ def xml_to_csv():
     rows = []
 
     #get all xml files
-    files = list_files_in_folder(folder+"circo_xml")
+    files = list_files_in_folder(folder+"candidats_T1_xml")
 
     for file in files:
 
-        xml_file_path = folder+"circo_xml/" + file
+        xml_file_path = folder+"candidats_T1_xml/" + file
         print("xml to csv: ", file)
 
         tree = ET.parse(xml_file_path)
@@ -35,54 +35,46 @@ def xml_to_csv():
 
         departement_libelle = root.find('.//Departement/LibDpt').text
 
-        for circo in root.findall('.//Circonscriptions/Circonscription'):
+        for circo in root.findall('.//Departement/Circonscriptions/Circonscription'):
 
             cod_cir_elec = circo.find('.//CodCirElec').text
             #print("*** "+cod_cir_elec)
             lib_cir_elec = circo.find('.//LibCirElec').text
 
-            tour = circo.find('.//Tours/Tour')
-            inscrits_number = tour.find('.//Mentions/Inscrits/Nombre').text
+            for candidat in circo.findall('.//Candidats/Candidat'):
 
-            for candidat in tour.findall('.//Resultats/Candidats/Candidat'):
-
+                id = candidat.find('NumPanneauCand').text if candidat.find('NumPanneauCand') is not None else ''
                 nom_psn = candidat.find('NomPsn').text if candidat.find('NomPsn') is not None else ''
                 prenom_psn = candidat.find('PrenomPsn').text if candidat.find('PrenomPsn') is not None else ''
                 civilite_psn = candidat.find('CivilitePsn').text if candidat.find('CivilitePsn') is not None else ''
                 cod_nua_cand = candidat.find('CodNuaCand').text if candidat.find('CodNuaCand') is not None else ''
-                nb_voix = candidat.find('NbVoix').text if candidat.find('NbVoix') is not None else ''
-                elu = candidat.find('Elu').text if candidat.find('Elu') is not None else ''
 
                 # Append the row to the list
                 rows.append([
+                    cod_cir_elec +"_"+ id,
                     cod_cir_elec,
                     lib_cir_elec,
                     departement_libelle,
-                    inscrits_number,
                     nom_psn,
                     prenom_psn,
                     civilite_psn,
                     cod_nua_cand,
-                    nb_voix,
-                    elu,
                 ])
 
     # Define the CSV headers
     headers = [
+        'cand_id',
         'circo',
         'circo_lib',
         'dep_lib',
-        'inscrits',
         'nom',
         'prenom',
         'civilite',
-        'nuance',
-        'voix',
-        'statut'
+        'nuance'
     ]
 
     # Write the rows to a CSV file
-    with open(folder+"resultats_tour1_par_circo.csv", 'w', newline='') as csvfile:
+    with open(folder+"candidats_T1.csv", 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(headers)
         csvwriter.writerows(rows)
@@ -133,5 +125,5 @@ def download():
             print(f"Failed to download data for ",dep,"Status code: {response.status_code}")
 
 
-download()
-#xml_to_csv()
+#download()
+xml_to_csv()
