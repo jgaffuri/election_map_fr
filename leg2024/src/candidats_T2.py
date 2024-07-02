@@ -122,16 +122,16 @@ def get_liste_deps():
 def download():
     for dep in get_liste_deps():
         print("download", dep)
-        url = "https://www.resultats-elections.interieur.gouv.fr/telechargements/LG2024/resultatsT1/"+dep+"/R1"+dep+"CIR.xml"
+        url = "https://www.resultats-elections.interieur.gouv.fr/telechargements/LG2024/candidatsT1/"+dep+"/C1"+dep+".xml"
 
         response = requests.get(url)
 
         if response.status_code == 200:
-            xml_file = folder + "circo_xml//R1"+dep+"CIR.xml"
+            xml_file = folder + "candidats_T1_xml/C1"+dep+".xml"
             with open(xml_file, "wb") as file: file.write(response.content)
         else:
             print(f"Failed to download data for ",dep,"Status code: {response.status_code}")
 
 
 download()
-xml_to_csv()
+#xml_to_csv()
