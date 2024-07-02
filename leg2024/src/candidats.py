@@ -23,11 +23,11 @@ def xml_to_csv():
     rows = []
 
     #get all xml files
-    files = list_files_in_folder(folder+"candidats_T1_xml")
+    files = list_files_in_folder(folder+"candidats_T"+tour+"_xml")
 
     for file in files:
 
-        xml_file_path = folder+"candidats_T1_xml/" + file
+        xml_file_path = folder+"candidats_T"+tour+"_xml/" + file
         print("xml to csv: ", file)
 
         tree = ET.parse(xml_file_path)
@@ -74,15 +74,13 @@ def xml_to_csv():
     ]
 
     # Write the rows to a CSV file
-    with open(folder+"candidats_T1.csv", 'w', newline='') as csvfile:
+    with open(folder+"candidats_T"+tour+".csv", 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(headers)
         csvwriter.writerows(rows)
 
 
 
-#file_code = "R125"
-#xml_to_csv("tmp/circo_xml/"+file_code+"CIR.xml", "tmp/circo_csv/"+file_code+"CIR.csv")
 
 
 
@@ -114,12 +112,12 @@ def get_liste_deps():
 def download():
     for dep in get_liste_deps():
         print("download", dep)
-        url = "https://www.resultats-elections.interieur.gouv.fr/telechargements/LG2024/candidatsT1/"+dep+"/C1"+dep+".xml"
+        url = "https://www.resultats-elections.interieur.gouv.fr/telechargements/LG2024/candidatsT"+tour+"/"+dep+"/C"+tour+dep+".xml"
 
         response = requests.get(url)
 
         if response.status_code == 200:
-            xml_file = folder + "candidats_T1_xml/C1"+dep+".xml"
+            xml_file = folder + "candidats_T"+tour+"_xml/C"+tour+dep+".xml"
             with open(xml_file, "wb") as file: file.write(response.content)
         else:
             print(f"Failed to download data for ",dep,"Status code: {response.status_code}")
