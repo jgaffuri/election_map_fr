@@ -13,7 +13,7 @@ folder = "/home/juju/geodata/elections_fr/leg2024/"
 if format_join:
 
     #load election results
-    df = pd.read_csv(folder + "resultats-provisoires-par-bureau-de-votevmn.csv", sep=";", dtype={'Code commune': str, 'Code BV': str})
+    df = pd.read_csv(folder + "resultats-provisoires-par-bureau-de-votevmn.csv", sep=";", low_memory=False, dtype={'Code commune': str, 'Code BV': str})
 
 #Code département	Libellé département	Code commune	Libellé commune	Code BV	Inscrits
 # Votants	% Votants	Abstentions	% Abstentions	Exprimés	% Exprimés/inscrits	% Exprimés/votants
@@ -26,15 +26,17 @@ if format_join:
 
     #remove unecessary columns
     df = df.drop(columns=[col for col in df.columns if '%' in col])
-    df = df.drop(columns=[col for col in df.columns if 'Sièges' in col])
     df = df.drop(columns=[col for col in df.columns if 'Numéro de panneau' in col])
     df = df.drop(columns=[col for col in df.columns if 'Libellé' in col])
     df = df.drop(columns=[col for col in df.columns if 'Sexe' in col])
     df = df.drop(columns=[col for col in df.columns if 'Elu' in col])
-    df = df.drop(columns=["Code localisation", "Code département", "Votants", "Abstentions", "Exprimés"])
+    df = df.drop(columns=["Code département"])    #"Votants", "Abstentions", "Exprimés"
 
     #rename Voix X -> vX
     for i in range(1,39): df.rename(columns={'Voix '+str(i): 'v'+str(i)}, inplace=True)
+    for i in range(1,19): df.rename(columns={'Nuance candidat '+str(i): 'nuance'+str(i)}, inplace=True)
+    for i in range(1,19): df.rename(columns={'Nom candidat '+str(i): 'nom'+str(i)}, inplace=True)
+    for i in range(1,19): df.rename(columns={'Prénom candidat '+str(i): 'prenom'+str(i)}, inplace=True)
 
     #make new field codeBureauVote
     df['codeBureauVote'] = df.apply(lambda row: str(row['Code commune']) + "_" + str(row['Code BV']), axis=1)
@@ -42,7 +44,6 @@ if format_join:
 
     #print(df.iloc[0].to_string())
 
-    '''
     #load bv data
     df2 = pd.read_csv("/home/juju/geodata/elections_fr/bv/bv.csv", dtype={'codeCirconscription': str})
     df2 = df2.drop(columns=["numeroBureauVote","id_bv"])
@@ -63,7 +64,6 @@ if format_join:
 
     #TODO fix that
     df = df.drop(columns=["codeBureauVote"])
-    '''
 
     #save
     df.to_csv(folder + "1.csv", index=False)
