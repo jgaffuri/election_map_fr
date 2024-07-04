@@ -3,11 +3,29 @@ from pygridmap import gridtiler
 from datetime import datetime
 import os
 
-format_join = True
+format_join = False
 aggregate = False
-tiling = False
+tiling = True
 
 folder = "/home/juju/geodata/elections_fr/leg2024/"
+
+
+
+def get_bloc(nuance):
+    if nuance in ["UG", "EXG", "DVG", "ECO", "COM", "FI", "SOC", "RDG", "VEC"]:
+        return "NFP"
+    if nuance in ["HOR", "UDI", "ENS", "DVC", "REN", "MDM"]:
+        return "MP"
+    if nuance in ["LR", "DVD"]:
+        return "D"
+    if nuance in ["EXD", "UXD", "REC", "RN", "DSV"]:
+        return "ED"
+    if nuance in ["DIV", "REG"]:
+        return "DIV"
+    
+    #print(f"Could not find bloc for: {nuance}")
+    return
+
 
 
 if format_join:
@@ -30,13 +48,31 @@ if format_join:
     df = df.drop(columns=[col for col in df.columns if 'Libellé' in col])
     df = df.drop(columns=[col for col in df.columns if 'Sexe' in col])
     df = df.drop(columns=[col for col in df.columns if 'Elu' in col])
+    df = df.drop(columns=[col for col in df.columns if 'Nom' in col])
+    df = df.drop(columns=[col for col in df.columns if 'Prénom' in col])
     df = df.drop(columns=["Code département"])    #"Votants", "Abstentions", "Exprimés"
 
     #rename Voix X -> vX
-    for i in range(1,39): df.rename(columns={'Voix '+str(i): 'v'+str(i)}, inplace=True)
-    for i in range(1,19): df.rename(columns={'Nuance candidat '+str(i): 'nuance'+str(i)}, inplace=True)
-    for i in range(1,19): df.rename(columns={'Nom candidat '+str(i): 'nom'+str(i)}, inplace=True)
-    for i in range(1,19): df.rename(columns={'Prénom candidat '+str(i): 'prenom'+str(i)}, inplace=True)
+    #for i in range(1,20): df.rename(columns={'Voix '+str(i): 'v'+str(i)}, inplace=True)
+    for i in range(1,20): df.rename(columns={'Nuance candidat '+str(i): 'nuance'+str(i)}, inplace=True)
+
+    #get blocs
+    for i in range(1,20): df['bloc'+str(i)] = df['nuance'+str(i)].apply(get_bloc)
+    df = df.drop(columns=[col for col in df.columns if 'nuance' in col])
+
+    #aggregate votes per bloc
+    for bloc in ["NFP","MP","D","ED","DIV"]:
+        def aggBlocs(row):
+            sum = 0
+            for i in range(1,20):
+                if row['bloc'+str(i)]==bloc: sum += row['Voix '+str(i)]
+            return int(sum)
+
+        df[bloc] = df.apply(aggBlocs, axis=1)
+
+    #clean
+    df = df.drop(columns=[col for col in df.columns if 'Voix' in col])
+    df = df.drop(columns=[col for col in df.columns if 'bloc' in col])
 
     #make new field codeBureauVote
     df['codeBureauVote'] = df.apply(lambda row: str(row['Code commune']) + "_" + str(row['Code BV']), axis=1)
@@ -111,7 +147,7 @@ if tiling:
         print("tiling for resolution", resolution)
 
         #create output folder
-        out_folder = 'pub/gridviz/tiles/' + str(resolution)
+        out_folder = 'pub/gridviz/leg2024/T1_bv/' + str(resolution)
         if not os.path.exists(folder): os.makedirs(folder)
 
         gridtiler.grid_tiling(
