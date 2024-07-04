@@ -13,14 +13,24 @@ folder = "/home/juju/geodata/elections_fr/leg2024/"
 if format_join:
 
     #load election results
-    df = pd.read_csv(folder + "resultats-definitifs-par-bureau-de-vote.csv", sep=";", dtype={'Code commune': str, 'Code BV': str})
+    df = pd.read_csv(folder + "resultats-provisoires-par-bureau-de-votevmn.csv", sep=";", dtype={'Code commune': str, 'Code BV': str})
+
+#Code département	Libellé département	Code commune	Libellé commune	Code BV	Inscrits
+# Votants	% Votants	Abstentions	% Abstentions	Exprimés	% Exprimés/inscrits	% Exprimés/votants
+# Blancs	% Blancs/inscrits	% Blancs/votants	Nuls	% Nuls/inscrits	% Nuls/votants
+# Numéro de panneau 1	Nuance candidat 1	Nom candidat 1	Prénom candidat 1	Sexe candidat 1	Voix 1	% Voix/inscrits 1	% Voix/exprimés 1	Elu 1
+# Numéro de panneau 2	Nuance candidat 2	Nom candidat 2	Prénom candidat 2	Sexe candidat 2	Voix 2	% Voix/inscrits 2	% Voix/exprimés 2	Elu 2
+# ...
+# Numéro de panneau 19	Nuance candidat 19	Nom candidat 19	Prénom candidat 19	Sexe candidat 19	Voix 19	% Voix/inscrits 19	% Voix/exprimés 19	Elu 19
+
 
     #remove unecessary columns
     df = df.drop(columns=[col for col in df.columns if '%' in col])
     df = df.drop(columns=[col for col in df.columns if 'Sièges' in col])
     df = df.drop(columns=[col for col in df.columns if 'Numéro de panneau' in col])
     df = df.drop(columns=[col for col in df.columns if 'Libellé' in col])
-    df = df.drop(columns=[col for col in df.columns if 'Nuance' in col])
+    df = df.drop(columns=[col for col in df.columns if 'Sexe' in col])
+    df = df.drop(columns=[col for col in df.columns if 'Elu' in col])
     df = df.drop(columns=["Code localisation", "Code département", "Votants", "Abstentions", "Exprimés"])
 
     #rename Voix X -> vX
@@ -32,8 +42,7 @@ if format_join:
 
     #print(df.iloc[0].to_string())
 
-
-
+    '''
     #load bv data
     df2 = pd.read_csv("/home/juju/geodata/elections_fr/bv/bv.csv", dtype={'codeCirconscription': str})
     df2 = df2.drop(columns=["numeroBureauVote","id_bv"])
@@ -54,6 +63,7 @@ if format_join:
 
     #TODO fix that
     df = df.drop(columns=["codeBureauVote"])
+    '''
 
     #save
     df.to_csv(folder + "1.csv", index=False)
