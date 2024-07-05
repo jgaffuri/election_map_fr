@@ -17,7 +17,12 @@ Résultats:
 Cartographie de l'élection présidentielle 2022 au niveau communal
 https://observablehq.com/@jgaffuri/cartographie-de-lelection-presidentielle-2022-au-niveau-c
 
+
+Cartes au niveau des bureaux de vote:
+- [Législatives 2024, premier tour](https://observablehq.com/@jgaffuri/leg2024_carte_bv)
+- [Européennes 2024](https://observablehq.com/d/6facb4269a2fcb12)
+
+
 TODO:
 - gridviz
 - https://openlayers.org/en/latest/examples/cluster.html
-
