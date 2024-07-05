@@ -3,9 +3,9 @@ from pygridmap import gridtiler
 from datetime import datetime
 import os
 
-format_join = False
+format_join = True
 aggregate = False
-tiling = True
+tiling = False
 
 folder = "/home/juju/geodata/elections_fr/leg2024/"
 
@@ -54,25 +54,25 @@ if format_join:
 
     #rename Voix X -> vX
     #for i in range(1,20): df.rename(columns={'Voix '+str(i): 'v'+str(i)}, inplace=True)
-    for i in range(1,20): df.rename(columns={'Nuance candidat '+str(i): 'nuance'+str(i)}, inplace=True)
+    #for i in range(1,20): df.rename(columns={'Nuance candidat '+str(i): 'nuance'+str(i)}, inplace=True)
 
-    #get blocs
-    for i in range(1,20): df['bloc'+str(i)] = df['nuance'+str(i)].apply(get_bloc)
-    df = df.drop(columns=[col for col in df.columns if 'nuance' in col])
+    #compute bloc of each candidate
+    #for i in range(1,20): df['bloc'+str(i)] = df['Nuance candidat '+str(i)].apply(get_bloc)
+    #df = df.drop(columns=[col for col in df.columns if 'Nuance' in col])
 
-    #aggregate votes per bloc
+    #compute results by bloc
     for bloc in ["NFP","MP","D","ED","DIV"]:
         def aggBlocs(row):
             sum = 0
             for i in range(1,20):
-                if row['bloc'+str(i)]==bloc: sum += row['Voix '+str(i)]
+                if get_bloc(row['Nuance candidat '+str(i)])==bloc: sum += row['Voix '+str(i)]
             return int(sum)
 
         df[bloc] = df.apply(aggBlocs, axis=1)
 
     #clean
     df = df.drop(columns=[col for col in df.columns if 'Voix' in col])
-    df = df.drop(columns=[col for col in df.columns if 'bloc' in col])
+    df = df.drop(columns=[col for col in df.columns if 'Nuance' in col])
 
     #make new field codeBureauVote
     df['codeBureauVote'] = df.apply(lambda row: str(row['Code commune']) + "_" + str(row['Code BV']), axis=1)
