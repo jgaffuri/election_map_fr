@@ -41,7 +41,10 @@ def xml_to_csv():
             #print("*** "+cod_cir_elec)
             lib_cir_elec = circo.find('.//LibCirElec').text
 
-            tour = circo.find('.//Tours/Tour')
+            tour = circo.findall('.//Tours/Tour')
+            if(len(tour)== 1): continue
+            tour = tour[1]
+
             inscrits_number = tour.find('.//Mentions/Inscrits/Nombre').text
 
             for candidat in tour.findall('.//Resultats/Candidats/Candidat'):
@@ -53,6 +56,8 @@ def xml_to_csv():
                 cod_nua_cand = candidat.find('CodNuaCand').text if candidat.find('CodNuaCand') is not None else ''
                 nb_voix = candidat.find('NbVoix').text if candidat.find('NbVoix') is not None else ''
                 elu = candidat.find('Elu').text if candidat.find('Elu') is not None else ''
+                voix = candidat.find('NbVoix').text if candidat.find('NbVoix') is not None else ''
+                taux_exprimes = candidat.find('RapportExprimes').text if candidat.find('RapportExprimes') is not None else ''
 
                 # Append the row to the list
                 rows.append([
@@ -67,6 +72,8 @@ def xml_to_csv():
                     cod_nua_cand,
                     nb_voix,
                     elu,
+                    voix,
+                    taux_exprimes,
                 ])
 
     # Define the CSV headers
@@ -81,11 +88,13 @@ def xml_to_csv():
         'civilite',
         'nuance',
         'voix',
-        'statut'
+        'statut',
+        'voix',
+        'taux_exprimes',
     ]
 
     # Write the rows to a CSV file
-    with open(folder+"resultats_tour1_par_circo.csv", 'w', newline='') as csvfile:
+    with open(folder+"resultats_tour2_par_circo.csv", 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(headers)
         csvwriter.writerows(rows)
@@ -125,12 +134,12 @@ def get_liste_deps():
 def download():
     for dep in get_liste_deps():
         print("download", dep)
-        url = "https://www.resultats-elections.interieur.gouv.fr/telechargements/LG2024/resultatsT1/"+dep+"/R1"+dep+"CIR.xml"
+        url = "https://www.resultats-elections.interieur.gouv.fr/telechargements/LG2024/resultatsT2/"+dep+"/R2"+dep+"CIR.xml"
 
         response = requests.get(url)
 
         if response.status_code == 200:
-            xml_file = folder + "circo_xml//R1"+dep+"CIR.xml"
+            xml_file = folder + "circo_xml//R2"+dep+"CIR.xml"
             with open(xml_file, "wb") as file: file.write(response.content)
         else:
             print(f"Failed to download data for ",dep,"Status code: {response.status_code}")
