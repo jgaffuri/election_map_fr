@@ -42,14 +42,14 @@ def xml_to_csv():
             lib_cir_elec = circo.find('.//LibCirElec').text
 
             tour = circo.findall('.//Tours/Tour')
-            if(len(tour)== 1): continue
-            tour = tour[1]
+            if(len(tour)== 1): tour = tour[0]
+            else: tour = tour[1]
 
             inscrits_number = tour.find('.//Mentions/Inscrits/Nombre').text
 
             for candidat in tour.findall('.//Resultats/Candidats/Candidat'):
 
-                id = candidat.find('NumPanneauCand').text if candidat.find('NumPanneauCand') is not None else ''
+                #id = candidat.find('NumPanneauCand').text if candidat.find('NumPanneauCand') is not None else ''
                 nom_psn = candidat.find('NomPsn').text if candidat.find('NomPsn') is not None else ''
                 prenom_psn = candidat.find('PrenomPsn').text if candidat.find('PrenomPsn') is not None else ''
                 civilite_psn = candidat.find('CivilitePsn').text if candidat.find('CivilitePsn') is not None else ''
@@ -61,7 +61,7 @@ def xml_to_csv():
 
                 # Append the row to the list
                 rows.append([
-                    cod_cir_elec +"_"+ id,
+                    #cod_cir_elec +"_"+ id,
                     cod_cir_elec,
                     lib_cir_elec,
                     departement_libelle,
@@ -78,7 +78,7 @@ def xml_to_csv():
 
     # Define the CSV headers
     headers = [
-        'cand_id',
+        #'cand_id',
         'circo',
         'circo_lib',
         'dep_lib',
