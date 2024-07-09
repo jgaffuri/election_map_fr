@@ -30,6 +30,7 @@ def xml_to_csv():
         xml_file_path = folder+"circo_xml/" + file
         print("xml to csv: ", file)
 
+
         tree = ET.parse(xml_file_path)
         root = tree.getroot()
 
