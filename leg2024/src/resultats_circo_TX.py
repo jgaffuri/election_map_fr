@@ -108,7 +108,7 @@ def xml_to_csv(T):
     ]
 
     # Write the rows to a CSV file
-    with open(folder+"resultats_tour"+tour+"_par_circo.csv", 'w', newline='') as csvfile:
+    with open(folder+"resultats_tour"+T+"_par_circo.csv", 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(headers)
         csvwriter.writerows(rows)
@@ -157,4 +157,4 @@ def download():
 
 #download()
 xml_to_csv("1")
-xml_to_csv("2")
+#xml_to_csv("2")
