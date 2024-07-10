@@ -19,7 +19,7 @@ def list_files_in_folder(folder_path):
         return []
 
 
-def xml_to_csv():
+def xml_to_csv(T):
 
     rows = []
 
@@ -43,40 +43,48 @@ def xml_to_csv():
             #print("*** "+cod_cir_elec)
             lib_cir_elec = circo.find('.//LibCirElec').text
 
-            tour = circo.findall('.//Tours/Tour')
-            if(len(tour)== 1): tour = tour[0]
-            else: tour = tour[1]
+            for tour in circo.findall('.//Tours/Tour'):
 
-            inscrits_number = tour.find('.//Mentions/Inscrits/Nombre').text
+                n_tour = tour.find('.//NumTour').text
+                if(n_tour != T): continue
 
-            for candidat in tour.findall('.//Resultats/Candidats/Candidat'):
+                inscrits_number = tour.find('.//Mentions/Inscrits/Nombre').text
+                abstention_number = tour.find('.//Mentions/Abstentions/Nombre').text
+                votants_number = tour.find('.//Mentions/Votants/Nombre').text
+                blancs_number = tour.find('.//Mentions/Blancs/Nombre').text
+                nuls_number = tour.find('.//Mentions/Nuls/Nombre').text
+                exprimes_number = tour.find('.//Mentions/Exprimes/Nombre').text
 
-                #id = candidat.find('NumPanneauCand').text if candidat.find('NumPanneauCand') is not None else ''
-                nom_psn = candidat.find('NomPsn').text if candidat.find('NomPsn') is not None else ''
-                prenom_psn = candidat.find('PrenomPsn').text if candidat.find('PrenomPsn') is not None else ''
-                civilite_psn = candidat.find('CivilitePsn').text if candidat.find('CivilitePsn') is not None else ''
-                cod_nua_cand = candidat.find('CodNuaCand').text if candidat.find('CodNuaCand') is not None else ''
-                nb_voix = candidat.find('NbVoix').text if candidat.find('NbVoix') is not None else ''
-                elu = candidat.find('Elu').text if candidat.find('Elu') is not None else ''
-                voix = candidat.find('NbVoix').text if candidat.find('NbVoix') is not None else ''
-                taux_exprimes = candidat.find('RapportExprimes').text if candidat.find('RapportExprimes') is not None else ''
+                for candidat in tour.findall('.//Resultats/Candidats/Candidat'):
 
-                # Append the row to the list
-                rows.append([
-                    #cod_cir_elec +"_"+ id,
-                    cod_cir_elec,
-                    lib_cir_elec,
-                    departement_libelle,
-                    inscrits_number,
-                    nom_psn,
-                    prenom_psn,
-                    civilite_psn,
-                    cod_nua_cand,
-                    nb_voix,
-                    elu,
-                    voix,
-                    taux_exprimes,
-                ])
+                    nom_psn = candidat.find('NomPsn').text if candidat.find('NomPsn') is not None else ''
+                    prenom_psn = candidat.find('PrenomPsn').text if candidat.find('PrenomPsn') is not None else ''
+                    civilite_psn = candidat.find('CivilitePsn').text if candidat.find('CivilitePsn') is not None else ''
+                    cod_nua_cand = candidat.find('CodNuaCand').text if candidat.find('CodNuaCand') is not None else ''
+                    nb_voix = candidat.find('NbVoix').text if candidat.find('NbVoix') is not None else ''
+                    elu = candidat.find('Elu').text if candidat.find('Elu') is not None else ''
+                    voix = candidat.find('NbVoix').text if candidat.find('NbVoix') is not None else ''
+                    taux_exprimes = candidat.find('RapportExprimes').text if candidat.find('RapportExprimes') is not None else ''
+
+                    # Append the row to the list
+                    rows.append([
+                        cod_cir_elec,
+                        lib_cir_elec,
+                        departement_libelle,
+                        nom_psn,
+                        prenom_psn,
+                        civilite_psn,
+                        cod_nua_cand,
+                        nb_voix,
+                        elu,
+                        voix,
+                        inscrits_number,
+                        abstention_number,
+                        votants_number,
+                        blancs_number,
+                        nuls_number,
+                        exprimes_number,
+                    ])
 
     # Define the CSV headers
     headers = [
@@ -84,7 +92,6 @@ def xml_to_csv():
         'circo',
         'circo_lib',
         'dep_lib',
-        'inscrits',
         'nom',
         'prenom',
         'civilite',
@@ -92,11 +99,16 @@ def xml_to_csv():
         'voix',
         'statut',
         'voix',
-        'taux_exprimes',
+        'inscrits',
+        'abstention',
+        'votants',
+        'blancs',
+        'nuls',
+        'exprimes',
     ]
 
     # Write the rows to a CSV file
-    with open(folder+"resultats_tour2_par_circo.csv", 'w', newline='') as csvfile:
+    with open(folder+"resultats_tour"+tour+"_par_circo.csv", 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(headers)
         csvwriter.writerows(rows)
@@ -143,5 +155,6 @@ def download():
             print(f"Failed to download data for ",dep,"Status code: {response.status_code}")
 
 
-download()
-#xml_to_csv()
+#download()
+xml_to_csv("1")
+xml_to_csv("2")
