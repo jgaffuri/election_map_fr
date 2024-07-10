@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 import csv
 
 folder = "tmp/"
-tour = "2"
+tour = "1"
 
 def list_files_in_folder(folder_path):
     try:

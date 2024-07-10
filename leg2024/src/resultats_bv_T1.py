@@ -7,18 +7,6 @@ folder = "tmp/"
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 def list_files_in_folder(folder_path):
     try:
         # Get the list of all files and directories in the specified directory

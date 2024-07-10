@@ -6,6 +6,7 @@ import csv
 folder = "tmp/"
 
 
+
 def list_files_in_folder(folder_path):
     try:
         # Get the list of all files and directories in the specified directory
@@ -23,11 +24,11 @@ def xml_to_csv():
     rows = []
 
     #get all xml files
-    files = list_files_in_folder(folder+"circo_xml")
+    files = list_files_in_folder(folder+"resultats_circo_T1T2_xml")
 
     for file in files:
 
-        xml_file_path = folder+"circo_xml/" + file
+        xml_file_path = folder+"resultats_circo_T1T2_xml/" + file
         print("xml to csv: ", file)
 
 
@@ -102,10 +103,6 @@ def xml_to_csv():
 
 
 
-#file_code = "R125"
-#xml_to_csv("tmp/circo_xml/"+file_code+"CIR.xml", "tmp/circo_csv/"+file_code+"CIR.csv")
-
-
 
 def get_liste_deps():
     out = []
@@ -140,11 +137,11 @@ def download():
         response = requests.get(url)
 
         if response.status_code == 200:
-            xml_file = folder + "circo_xml//R2"+dep+"CIR.xml"
+            xml_file = folder + "resultats_circo_T1T2_xml//R2"+dep+"CIR.xml"
             with open(xml_file, "wb") as file: file.write(response.content)
         else:
             print(f"Failed to download data for ",dep,"Status code: {response.status_code}")
 
 
 download()
-xml_to_csv()
+#xml_to_csv()
